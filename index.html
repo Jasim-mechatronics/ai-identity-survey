@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية</title>
-<meta name="description" content="استبانة علمية قصيرة (5–7 دقائق) ضمن بحث أكاديمي عن استخدام الذكاء الاصطناعي وأثره في الهوية المعرفية للطالب الجامعي. إجابتك سرّية ومجهولة وتُستعمل لأغراض البحث العلمي فقط.">
+<meta name="description" content="استبانة علمية قصيرة (5–7 دقائق) موجّهة لطلبة الجامعات العراقية (الدراسات الأولية والعليا) عن استخدام الذكاء الاصطناعي وأثره في الهوية المعرفية. إجابتك سرّية ومجهولة وتُستعمل لأغراض البحث العلمي فقط.">
 <meta name="theme-color" content="#0b6e4f">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ar_AR">
 <meta property="og:title" content="استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية">
-<meta property="og:description" content="شارك في 5–7 دقائق ضمن بحث علمي أكاديمي. إجابتك سرّية ومجهولة بالكامل.">
+<meta property="og:description" content="استبانة لطلبة الجامعات العراقية (الأولية والعليا) — 5–7 دقائق ضمن بحث علمي. إجابتك سرّية ومجهولة بالكامل.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية">
 <meta name="twitter:description" content="استبانة علمية قصيرة وسرّية — مساهمتك تدعم بحثاً عن الهوية المعرفية للطالب الجامعي.">
@@ -77,7 +77,7 @@
   .choices{display:flex; flex-wrap:wrap; gap:8px;}
   .choice{position:relative; flex:1 1 auto;}
   .choice input{position:absolute; opacity:0; pointer-events:none;}
-  .choice label{display:flex; align-items:center; justify-content:center; gap:9px; text-align:center; padding:12px 14px; border:1.6px solid var(--line); border-radius:12px; font-size:14.5px; font-weight:600; background:#fff; cursor:pointer; transition:.15s;}
+  .choice label{display:flex; align-items:center; justify-content:flex-start; gap:11px; text-align:start; padding:12px 15px; border:1.6px solid var(--line); border-radius:12px; font-size:14.5px; font-weight:600; background:#fff; cursor:pointer; transition:.15s;}
   /* مؤشّر الاختيار: دائرة للأحادي، مربّع للمتعدّد */
   .choice label::before{content:""; width:19px; height:19px; border:2px solid #c2d2ca; background:#fff; flex:none; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; line-height:1; transition:.15s;}
   .choice input[type="radio"] + label::before{border-radius:50%;}
@@ -163,9 +163,10 @@
   <section class="screen active welcome" id="screen-welcome">
     <div class="hero">🎓</div>
     <h1>الذكاء الاصطناعي التوليدي<br>والهوية المعرفية الجامعية</h1>
-    <div class="conf">استبانة علمية · 2026</div>
+    <div class="conf">استبانة علمية موجّهة لطلبة الجامعات العراقية · 2026</div>
 
     <div class="intro-card">
+      <div class="row"><span class="ic">🎓</span><div>موجّهة لطلبة <b>الجامعات العراقية</b> — الدراسات الأولية والعليا.</div></div>
       <div class="row"><span class="ic">⏱️</span><div>تستغرق <b>5–7 دقائق</b> فقط، وتُجاب من الهاتف بسهولة.</div></div>
       <div class="row"><span class="ic">🔒</span><div>إجابتك <b>سرية تماماً</b> وبلا اسم، وتُستعمل لأغراض البحث العلمي فقط.</div></div>
       <div class="row"><span class="ic">✅</span><div>لا توجد إجابة صحيحة وأخرى خاطئة — المطلوب رأيك الصريح.</div></div>
@@ -303,7 +304,7 @@ function demographicsHTML(){
     <div id="noUseHint" class="hint" style="display:none; margin:-10px 0 18px; border-style:solid; border-color:var(--gold); background:#fff7e6; color:#8a6d1a">بما أنك لا تستخدم هذه الأدوات، تكفي إجابتك عن البيانات أعلاه — وستنتقل مباشرة إلى نهاية الاستبانة عند الضغط على «إنهاء وإرسال». شكراً لمشاركتك.</div>
     <div id="usageFields">
       ${single("frequency","معدّل استخدامك لها",["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"])}
-      ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Copilot","DeepSeek"],true)}
+      ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Claude","Copilot","DeepSeek"],true)}
       ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"])}
     </div>
   `;
