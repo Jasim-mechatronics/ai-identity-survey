@@ -69,6 +69,11 @@
   .itbl td.m{font-weight:700; color:var(--green-d); white-space:nowrap;}
   .itbl .hi td.m{color:#0b6e4f;} .itbl .lo td.m{color:#c4543e;}
   .itbl .ax{font-weight:700; color:var(--ink); background:var(--soft);}
+  /* مقارنة بين المجموعات */
+  #compareCard h3::before{background:#c9961f;}
+  .cmp-sel{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px;}
+  .cmp-btn{border:1.5px solid var(--line); background:#fff; color:var(--ink); border-radius:20px; padding:7px 14px; font-family:inherit; font-size:13px; font-weight:700; cursor:pointer; transition:.15s;}
+  .cmp-btn.on{background:var(--green); border-color:var(--green); color:#fff;}
   /* طباعة / تصدير PDF */
   @media print{
     header .controls, footer, #status{display:none !important;}
@@ -81,7 +86,6 @@
 </style>
 </head>
 <body>
-
 <style>
 #gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#08503a,#0b6e4f);display:flex;align-items:center;justify-content:center;padding:20px;font-family:"Tajawal","Segoe UI",Tahoma,sans-serif;}
 #gate .gate-card{background:#fff;border-radius:18px;padding:30px 26px;max-width:340px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);}
@@ -91,19 +95,9 @@
 #gate input{width:100%;padding:13px 14px;border:1.6px solid #dce7e1;border-radius:12px;font-family:inherit;font-size:16px;text-align:center;margin-bottom:10px;}
 #gate input:focus{outline:none;border-color:#0b6e4f;}
 #gate button{width:100%;padding:13px;border:none;border-radius:12px;background:#0b6e4f;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;}
-#gate button:active{transform:translateY(1px);}
 #gateErr{color:#c4543e;font-size:13px;margin-top:10px;}
 </style>
-<div id="gate">
-  <div class="gate-card">
-    <div class="gate-logo">ع</div>
-    <h2>لوحة النتائج</h2>
-    <p>لوحة خاصة بالباحث لمتابعة نتائج الاستبانة. أدخل رمز الدخول للمتابعة.</p>
-    <input id="gateInput" type="password" inputmode="text" placeholder="رمز الدخول" autocomplete="off">
-    <button id="gateBtn">دخول</button>
-    <div id="gateErr" style="display:none">رمز غير صحيح، حاول مجدداً.</div>
-  </div>
-</div>
+<div id="gate"><div class="gate-card"><div class="gate-logo">ع</div><h2>لوحة النتائج</h2><p>لوحة خاصة بالباحث لمتابعة نتائج الاستبانة. أدخل رمز الدخول للمتابعة.</p><input id="gateInput" type="password" inputmode="text" placeholder="رمز الدخول" autocomplete="off"><button id="gateBtn">دخول</button><div id="gateErr" style="display:none">رمز غير صحيح، حاول مجدداً.</div></div></div>
 <header>
   <div class="ttl">
     <div class="logo">ع</div>
@@ -139,6 +133,14 @@
     <h3>🔎 أبرز الفقرات داخل كل محور (الأعلى والأدنى متوسطاً)</h3>
     <div style="overflow-x:auto"><table class="itbl" id="itemsTbl"></table></div>
     <div class="note">يُبيّن أين تتركّز القوة والضعف داخل كل محور بدقة الفقرة لا متوسط المحور فقط. الفقرة العكسية q14 محسوبة معكوسةً ضمن محور التبعية. (م = المتوسط، ع.م = الانحراف المعياري).</div>
+  </div>
+
+  <div class="card wide" id="compareCard" style="display:none; margin-bottom:18px">
+    <h3>⚖️ مقارنة بين المجموعات</h3>
+    <div id="compareSel" class="cmp-sel"></div>
+    <div class="chart-box" style="height:330px"><canvas id="cCompare"></canvas></div>
+    <div id="compareNote" class="note"></div>
+    <div class="note">متوسط كل محور (1–5) لكل مجموعة جنباً إلى جنب. قراءة <b>وصفية</b> لرصد الفروق؛ ودلالتها الإحصائية (T-test/ANOVA) تُحسم في SPSS/Jamovi/JASP. غير المستخدمين مستبعَدون. المحور المرتفع في «التبعية» = تبعية أعلى، وفي بقية المحاور = إيجابية أعلى.</div>
   </div>
 
   <div class="grid" id="grid" style="display:none">
@@ -189,6 +191,18 @@ const AXES_DEF = [
   {name:"الهوية الثقافية واللغوية", from:22, to:26, rev:[]},
   {name:"الوعي والحوكمة",           from:27, to:34, rev:[]}
 ];
+/* أبعاد المقارنة بين المجموعات */
+const COMPARE_DIMS = [
+  { label:"المرحلة (أولية ↔ عليا)", groups:["أولية","عليا"],
+    of:r=> r.level==="دراسات عليا" ? "عليا" : (["الأولى","الثانية","الثالثة","الرابعة"].includes((r.level||"").trim()) ? "أولية" : null) },
+  { label:"التخصص (علمي ↔ إنساني)", groups:["علمي","إنساني"],
+    of:r=> { const t=(r.track||""); return t.includes("علمي") ? "علمي" : (t.includes("إنساني") ? "إنساني" : null); } },
+  { label:"كثافة الاستخدام", groups:["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"],
+    of:r=> (r.frequency||"").trim() || null },
+  { label:"الجنس (ذكور ↔ إناث)", groups:["ذكر","أنثى"],
+    of:r=> (r.gender||"").trim() || null }
+];
+let compareDim = 0;
 
 /* تحميل البيانات عبر JSONP لتفادي قيود CORS */
 function loadData(){
@@ -277,6 +291,7 @@ function render(payload){
   buildInterpretation({ n:rows.length, gender, track, level, freq, tools, purp, axes, aStats });
   buildWarnings(rows);
   buildItems(rows);
+  buildCompare(rows);
 }
 
 /* تصنيف متوسط ليكرت الخماسي */
@@ -411,6 +426,53 @@ function buildItems(rows){
   });
   tbl.innerHTML=html;
   card.style.display= any? "block":"none";
+}
+
+/* مقارنة بين المجموعات */
+function buildCompare(rows){
+  const card=document.getElementById("compareCard");
+  const sel=document.getElementById("compareSel");
+  const users=rows.filter(r=> r.q1!==undefined && r.q1!=="" && r.q1!==null);
+  if(users.length===0){ card.style.display="none"; return; }
+  card.style.display="block";
+  sel.innerHTML=COMPARE_DIMS.map((d,i)=>`<button class="cmp-btn${i===compareDim?' on':''}" data-i="${i}">${d.label}</button>`).join("");
+  sel.querySelectorAll(".cmp-btn").forEach(b=> b.addEventListener("click", ()=>{ compareDim=+b.dataset.i; buildCompare(rows); }));
+  drawCompare(users, COMPARE_DIMS[compareDim]);
+}
+function drawCompare(users, dim){
+  const groupRows={}; dim.groups.forEach(g=> groupRows[g]=[]);
+  users.forEach(r=>{ const g=dim.of(r); if(g && groupRows[g]) groupRows[g].push(r); });
+  const present=dim.groups.filter(g=> groupRows[g].length>0);
+  const colors=["#0b6e4f","#c9961f","#3a9e7c","#c4543e"];
+  const datasets=present.map((g,gi)=>({
+    label:`${g} (ن=${groupRows[g].length})`,
+    data:AXES_DEF.map(d=> axisStat(groupRows[g],d).mean),
+    backgroundColor:colors[gi%colors.length], borderRadius:6
+  }));
+  drawGroupedBar("cCompare", AXES_DEF.map(d=>d.name), datasets);
+  // ملاحظة سلوك التحقّق (q17 العودة للمصادر، q29 التحقق من المراجع)
+  const verif=present.map(g=>{
+    let s=0,c=0; groupRows[g].forEach(r=>[17,29].forEach(q=>{ const v=parseFloat(r["q"+q]); if(!isNaN(v)){s+=v;c++;} }));
+    return { g, m: c? +(s/c).toFixed(2):null };
+  }).filter(v=> v.m!==null);
+  let note="";
+  if(verif.length>=2){
+    const top=verif.slice().sort((a,b)=>b.m-a.m)[0];
+    note=`🔎 سلوك التحقّق من المعلومة (متوسط الفقرتين 17 و29): `+
+      verif.map(v=>`<b>${v.g}</b> ${v.m}`).join(" · ")+
+      ` — الأعلى تحقّقاً: <b style="color:#0b6e4f">${top.g}</b>.`;
+  }
+  document.getElementById("compareNote").innerHTML=note;
+}
+function drawGroupedBar(id, labels, datasets){
+  destroy(id);
+  charts[id]=new Chart(document.getElementById(id), {
+    type:"bar",
+    data:{ labels, datasets },
+    options:{ responsive:true, maintainAspectRatio:false,
+      scales:{ y:{ min:0, max:5, ticks:{ stepSize:1 } }, x:{ ticks:{ font:{family:"Tajawal", size:11.5} } } },
+      plugins:{ legend:{ position:"bottom", labels:{ font:{family:"Tajawal"} } } } }
+  });
 }
 
 function shorten(s){ return s.length>22 ? s.slice(0,20)+"…" : s; }
