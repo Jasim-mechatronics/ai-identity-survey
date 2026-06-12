@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية</title>
+<meta name="description" content="استبانة علمية قصيرة (5–7 دقائق) ضمن بحث للمؤتمر العلمي العالمي الخامس «الهوية المعرفية في عالم متغير». إجابتك سرّية ومجهولة وتُستعمل لأغراض البحث العلمي فقط.">
+<meta name="theme-color" content="#0b6e4f">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ar_AR">
+<meta property="og:title" content="استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية">
+<meta property="og:description" content="شارك في 5–7 دقائق ضمن بحث علمي للمؤتمر العلمي العالمي الخامس «الهوية المعرفية في عالم متغير». إجابتك سرّية ومجهولة بالكامل.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="استبانة: الذكاء الاصطناعي والهوية المعرفية الجامعية">
+<meta name="twitter:description" content="استبانة علمية قصيرة وسرّية — مساهمتك تدعم بحثاً عن الهوية المعرفية للطالب الجامعي.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b6e4f'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='white' font-family='Arial'%3E%D8%B9%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#0b6e4f; --green-d:#08503a; --green-l:#3a9e7c;
+    --gold:#c9961f; --ink:#1d2b25; --muted:#6b7c73;
+    --soft:#f3f7f5; --line:#dce7e1; --red:#c44; --bg:#e9f0ed;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    font-family:"Tajawal","Segoe UI",Tahoma,sans-serif;
+    color:var(--ink); background:var(--bg); line-height:1.85;
+    min-height:100vh;
+  }
+  .app{max-width:680px; margin:0 auto; min-height:100vh; background:#fff; display:flex; flex-direction:column; box-shadow:0 0 40px rgba(0,0,0,.08);}
+
+  /* Progress */
+  .topbar{position:sticky; top:0; z-index:20; background:#fff; border-bottom:1px solid var(--line);}
+  .brand{display:flex; align-items:center; gap:10px; padding:12px 18px 8px;}
+  .brand .logo{width:34px; height:34px; border-radius:9px; background:linear-gradient(135deg,var(--green-d),var(--green-l)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:800; font-size:18px; flex:none;}
+  .brand .t{font-size:13.5px; font-weight:700; color:var(--green-d); line-height:1.4;}
+  .brand .t small{display:block; font-weight:500; color:var(--muted); font-size:11.5px;}
+  .progress-wrap{padding:0 18px 12px;}
+  .progress-track{height:7px; background:#e7efeb; border-radius:10px; overflow:hidden;}
+  .progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--green),var(--green-l)); border-radius:10px; transition:width .35s ease;}
+  .progress-label{font-size:11.5px; color:var(--muted); margin-top:5px; text-align:left;}
+
+  .screen{flex:1; padding:22px 18px 30px; display:none; animation:fade .35s ease;}
+  .screen.active{display:block;}
+  @keyframes fade{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;}}
+
+  /* Welcome */
+  .welcome{text-align:center; padding-top:18px;}
+  .welcome .hero{width:74px; height:74px; margin:0 auto 16px; border-radius:20px; background:linear-gradient(135deg,var(--green-d),var(--green-l)); display:flex; align-items:center; justify-content:center; font-size:38px; box-shadow:0 8px 22px rgba(11,110,79,.3);}
+  .welcome h1{font-size:21px; margin:0 0 6px; color:var(--green-d); line-height:1.5;}
+  .welcome .conf{font-size:13px; color:var(--muted); margin-bottom:20px;}
+  .intro-card{background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:18px; text-align:right; font-size:14.5px; margin-bottom:14px;}
+  .intro-card .row{display:flex; gap:10px; margin:10px 0;}
+  .intro-card .ic{color:var(--green); font-size:17px; flex:none;}
+  .hint{font-size:12.5px; color:var(--muted); background:#fff; border-radius:10px; padding:10px 12px; border:1px dashed var(--line); margin-top:8px;}
+  .consent{display:flex; align-items:flex-start; gap:10px; font-size:13.5px; background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:14px 0; cursor:pointer; text-align:right;}
+  .consent input{width:20px; height:20px; accent-color:var(--green); margin-top:2px; flex:none;}
+
+  /* Steps */
+  .step-head{margin-bottom:16px;}
+  .step-head .chip{display:inline-block; background:var(--soft); color:var(--green-d); font-size:12px; font-weight:700; padding:4px 12px; border-radius:20px; margin-bottom:8px;}
+  .step-head h2{font-size:19px; margin:0; color:var(--ink);}
+  .step-head p{font-size:13px; color:var(--muted); margin:5px 0 0;}
+
+  .field{margin-bottom:18px;}
+  .field > label.q{display:block; font-size:15px; font-weight:700; margin-bottom:9px;}
+  .field .req{color:var(--red); font-weight:700;}
+
+  /* choice buttons (single & multi) */
+  .choices{display:flex; flex-wrap:wrap; gap:8px;}
+  .choice{position:relative; flex:1 1 auto;}
+  .choice input{position:absolute; opacity:0; pointer-events:none;}
+  .choice label{display:block; text-align:center; padding:11px 14px; border:1.6px solid var(--line); border-radius:12px; font-size:14px; background:#fff; cursor:pointer; transition:.15s; white-space:nowrap;}
+  .choice input:checked + label{background:var(--green); border-color:var(--green); color:#fff; font-weight:700; box-shadow:0 4px 12px rgba(11,110,79,.25);}
+  .choices.stack .choice{flex:1 1 100%;}
+  .choices.grid2 .choice{flex:1 1 calc(50% - 8px);}
+  .other-input{margin-top:8px; width:100%; padding:10px 12px; border:1.4px solid var(--line); border-radius:10px; font-family:inherit; font-size:14px;}
+  .text-input{width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:12px; font-family:inherit; font-size:14.5px;}
+  .text-input:focus, .other-input:focus{outline:none; border-color:var(--green);}
+
+  /* Likert cards */
+  .axis-legend{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); background:var(--soft); border-radius:10px; padding:7px 14px; margin-bottom:14px;}
+  .axis-legend b{color:var(--green-d);}
+  .qcard{border:1.5px solid var(--line); border-radius:14px; padding:14px 15px 12px; margin-bottom:12px; transition:.2s; background:#fff;}
+  .qcard.answered{border-color:#bfe0d0; background:#fbfefc;}
+  .qcard.invalid{border-color:var(--red); background:#fff6f5;}
+  .qcard .qt{font-size:14.5px; font-weight:500; margin-bottom:11px; display:flex; gap:8px;}
+  .qcard .qt .n{background:var(--green-d); color:#fff; min-width:23px; height:23px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex:none;}
+  .qcard .rev{font-size:10px; color:var(--gold); border:1px solid var(--gold); border-radius:6px; padding:0 5px; align-self:center;}
+  .likert{display:flex; gap:6px;}
+  .lk{flex:1; border:1.6px solid var(--line); background:#fff; border-radius:11px; padding:10px 0; font-size:15px; font-weight:700; cursor:pointer; color:var(--muted); font-family:inherit; transition:.12s;}
+  .lk:active{transform:scale(.94);}
+  .lk[data-v="5"].sel{background:#0b6e4f; border-color:#0b6e4f; color:#fff;}
+  .lk[data-v="4"].sel{background:#3a9e7c; border-color:#3a9e7c; color:#fff;}
+  .lk[data-v="3"].sel{background:#9aa6a0; border-color:#9aa6a0; color:#fff;}
+  .lk[data-v="2"].sel{background:#e0915a; border-color:#e0915a; color:#fff;}
+  .lk[data-v="1"].sel{background:#c4543e; border-color:#c4543e; color:#fff;}
+  .lk-ends{display:flex; justify-content:space-between; font-size:10.5px; color:var(--muted); margin-top:6px; padding:0 2px;}
+
+  /* nav */
+  .nav{display:flex; gap:10px; padding:14px 18px calc(16px + env(safe-area-inset-bottom)); position:sticky; bottom:0; background:#fff; border-top:1px solid var(--line);}
+  .btn{flex:1; border:none; border-radius:13px; padding:14px; font-size:15.5px; font-weight:700; font-family:inherit; cursor:pointer; transition:.15s;}
+  .btn-primary{background:var(--green); color:#fff; box-shadow:0 5px 16px rgba(11,110,79,.28);}
+  .btn-primary:active{transform:translateY(1px);}
+  .btn-primary:disabled{background:#a9c4b9; opacity:.5; box-shadow:none;}
+  .btn-ghost{flex:0 0 auto; background:var(--soft); color:var(--green-d); padding:14px 20px;}
+  .err-msg{color:var(--red); font-size:13px; text-align:center; padding:0 18px 8px; display:none;}
+  .err-msg.show{display:block;}
+
+  /* thank you */
+  .done{text-align:center; padding:50px 20px;}
+  .done .check{width:88px; height:88px; margin:0 auto 20px; border-radius:50%; background:linear-gradient(135deg,var(--green-d),var(--green-l)); display:flex; align-items:center; justify-content:center; animation:pop .5s ease;}
+  .done .check svg{width:46px; height:46px;}
+  @keyframes pop{0%{transform:scale(0);}70%{transform:scale(1.12);}100%{transform:scale(1);}}
+  .done h2{color:var(--green-d); font-size:23px; margin:0 0 8px;}
+  .done p{color:var(--muted); font-size:15px; max-width:380px; margin:0 auto 6px;}
+
+  .sending{position:fixed; inset:0; background:rgba(255,255,255,.92); display:none; align-items:center; justify-content:center; flex-direction:column; gap:14px; z-index:50;}
+  .sending.show{display:flex;}
+  .spinner{width:46px; height:46px; border:4px solid var(--soft); border-top-color:var(--green); border-radius:50%; animation:spin 1s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .sending p{color:var(--green-d); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- شريط التقدّم -->
+  <div class="topbar" id="topbar" style="display:none">
+    <div class="brand">
+      <div class="logo">ع</div>
+      <div class="t">المؤتمر العلمي العالمي الخامس «الهوية المعرفية في عالم متغير»
+      </div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-track"><div class="progress-fill" id="pfill"></div></div>
+      <div class="progress-label" id="plabel">الخطوة 1 من 6</div>
+    </div>
+  </div>
+
+  <!-- شاشة الترحيب -->
+  <section class="screen active welcome" id="screen-welcome">
+    <div class="hero">🎓</div>
+    <h1>الذكاء الاصطناعي التوليدي<br>والهوية المعرفية الجامعية</h1>
+    <div class="conf">استبانة علمية · 2026</div>
+
+    <div class="intro-card">
+      <div class="row"><span class="ic">⏱️</span><div>تستغرق <b>5–7 دقائق</b> فقط، وتُجاب من الهاتف بسهولة.</div></div>
+      <div class="row"><span class="ic">🔒</span><div>إجابتك <b>سرية تماماً</b> وبلا اسم، وتُستعمل لأغراض البحث العلمي فقط.</div></div>
+      <div class="row"><span class="ic">✅</span><div>لا توجد إجابة صحيحة وأخرى خاطئة — المطلوب رأيك الصريح.</div></div>
+      <div class="hint">المقصود بالذكاء الاصطناعي التوليدي: الأدوات التي تُنتج نصوصاً أو إجابات بناءً على طلبك، مثل ChatGPT وGemini وCopilot وDeepSeek وغيرها.</div>
+    </div>
+
+    <label class="consent">
+      <input type="checkbox" id="consent">
+      <span>أوافق على المشاركة في هذه الاستبانة لأغراض البحث العلمي.</span>
+    </label>
+
+    <button class="btn btn-primary" id="startBtn" disabled>ابدأ الآن ←</button>
+  </section>
+
+  <!-- الخطوات تُبنى هنا -->
+  <section class="screen" id="screen-steps">
+    <div id="stepContainer"></div>
+  </section>
+
+  <!-- شاشة الشكر -->
+  <section class="screen done" id="screen-done">
+    <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2>شكراً لمشاركتك! 🌟</h2>
+    <p>تم تسجيل إجاباتك بنجاح. مساهمتك تدعم بحثاً علمياً عن الهوية المعرفية للطالب الجامعي.</p>
+    <p style="margin-top:14px; font-size:13px;">يمكنك إغلاق الصفحة الآن.</p>
+  </section>
+
+  <!-- أزرار التنقّل -->
+  <div class="err-msg" id="errMsg">⚠️ الرجاء الإجابة عن جميع الأسئلة المطلوبة للمتابعة.</div>
+  <div class="nav" id="nav" style="display:none">
+    <button class="btn btn-ghost" id="prevBtn">السابق</button>
+    <button class="btn btn-primary" id="nextBtn">التالي ←</button>
+  </div>
+</div>
+
+<div class="sending" id="sending"><div class="spinner"></div><p>جارٍ إرسال إجاباتك…</p></div>
+
+<script>
+/* ====================================================================
+   الإعداد: ضع هنا رابط تطبيق Google Apps Script بعد نشره (انظر دليل النشر).
+   مثال: https://script.google.com/macros/s/AKfyc.../exec
+   ==================================================================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw_OgVumv-j7cbKdRcfmT8TmRPVuqtfCkYLOBfHa29KHnUArQAuLMRRWTgLMcKObTw1kw/exec";
+
+/* ---- بيانات المحاور (المقياس) ---- */
+const AXES = [
+  { chip:"المحور 2 من 6", title:"تمكين المعرفة", desc:"إلى أي مدى توافق على العبارات الآتية؟",
+    start:1, items:[
+      "يساعدني الذكاء الاصطناعي التوليدي على فهم الأفكار والمفاهيم الصعبة بصورة أعمق.",
+      "يوسّع استخدامي للأداة آفاقي المعرفية ويعرّفني بزوايا جديدة للموضوع.",
+      "يحفّزني على توليد أفكار وحلول لم تكن لتخطر لي بمفردي.",
+      "يساعدني في تنظيم مادتي العلمية وبناء تصوّر أولي لبحثي.",
+      "يسهّل عليّ الوصول السريع إلى المعلومات وتلخيص المصادر المطوّلة.",
+      "يطوّر مهاراتي في الكتابة الأكاديمية حين أستعمله بوعي.",
+      "أشعر أن استخدامي الواعي للأداة زاد من كفاءتي وإنتاجيتي في دراستي."
+    ]},
+  { chip:"المحور 3 من 6", title:"الاعتماد على الأداة", desc:"فكّر في عاداتك الفعلية عند الاستخدام.",
+    start:8, rev:[14], items:[
+      "ألجأ إلى الأداة مباشرةً عند أي سؤال دون أن أحاول التفكير في الحل أولاً.",
+      "أجد صعوبة في إنجاز واجباتي الدراسية دون الاستعانة بالذكاء الاصطناعي.",
+      "أعتمد على ما تنتجه الأداة كما هو دون تعديل يُذكر.",
+      "تراجعت رغبتي في بذل مجهود ذهني طويل بعد اعتيادي على الأداة.",
+      "أثق بإجابات البرنامج حتى لو لم أتحقق من صحتها.",
+      "أشعر بالقلق أو العجز إذا تعذّر عليّ الوصول إلى الأداة.",
+      "أحرص على إنجاز جوهر العمل بنفسي وأقصر دور الأداة على المساعدة فقط."
+    ]},
+  { chip:"المحور 4 من 6", title:"الاستقلال الفكري", desc:"كيف تتعامل مع ما تحصل عليه من الأداة؟",
+    start:15, items:[
+      "أعيد صياغة ما أحصل عليه من الأداة بأسلوبي ولغتي الخاصة قبل استخدامه.",
+      "أُخضع مخرجات الأداة للنقد والمقارنة بما أعرفه قبل قبولها.",
+      "أعود إلى المصادر العلمية الأصلية للتأكد، ولا أكتفي بما تقدّمه الأداة.",
+      "أستطيع كتابة بحثي أو تقريري بنفسي دون اعتماد كلي على الأداة.",
+      "أميّز بوضوح بين أفكاري الخاصة وما أنتجته الأداة.",
+      "أحرص على أن يبقى القرار العلمي النهائي بيدي لا بيد البرنامج.",
+      "أعدّ التفكير المستقل جزءاً من هويتي كطالب جامعي لا أتنازل عنه."
+    ]},
+  { chip:"المحور 5 من 6", title:"الهوية الثقافية واللغوية", desc:"علاقة الأداة بلغتك وقيمك وبيئتك.",
+    start:22, items:[
+      "أحرص على أن يعكس عملي الأكاديمي لغتي العربية وأسلوبي لا أسلوب الأداة.",
+      "ألاحظ أن بعض مخرجات الأداة لا تراعي قيمنا وسياقنا الثقافي والديني.",
+      "أتحقق من ملاءمة الأمثلة والمصطلحات التي تقترحها الأداة لبيئتنا العراقية.",
+      "أخشى أن يؤدي الاستخدام المتواصل إلى إضعاف خصوصيتنا الثقافية والمعرفية.",
+      "أوظّف الأداة بما يخدم هويتي الثقافية لا بما يُذيبها فيها."
+    ]},
+  { chip:"المحور 6 من 6", title:"الوعي والحوكمة الجامعية", desc:"الوعي بالأخطاء والنزاهة ودور الجامعة.",
+    start:27, items:[
+      "أُدرك أن الذكاء الاصطناعي قد يقدّم معلومات خاطئة أو متحيّزة.",
+      "أعلم أن الأداة قد تختلق مراجع أو اقتباسات لا وجود لها.",
+      "أتحقق من صحة المراجع والاقتباسات التي يقترحها البرنامج قبل اعتمادها.",
+      "أُفصح لأستاذي عن استعانتي بالذكاء الاصطناعي عند تكليفي بعمل.",
+      "أرى أن استخدام الأداة دون إفصاح في الأعمال المقيَّمة يخالف النزاهة العلمية.",
+      "وجّهني أساتذتي إلى الطريقة المسؤولة لاستخدام الذكاء الاصطناعي.",
+      "توفّر جامعتي ضوابط أو إرشادات واضحة لاستخدام الذكاء الاصطناعي.",
+      "أحتاج إلى تدريب على الاستخدام الأخلاقي والمنهجي لهذه الأدوات."
+    ]}
+];
+
+/* ---- بناء خطوة البيانات العامة (المحور 1) ---- */
+function demographicsHTML(){
+  const single = (name, label, opts, cls="") => `
+    <div class="field" data-field="${name}" data-type="single">
+      <label class="q">${label} <span class="req">*</span></label>
+      <div class="choices ${cls}">
+        ${opts.map((o,i)=>`<div class="choice">
+          <input type="radio" name="${name}" id="${name}_${i}" value="${o}">
+          <label for="${name}_${i}">${o}</label></div>`).join("")}
+      </div>
+    </div>`;
+  const multi = (name, label, opts, extra=false) => `
+    <div class="field" data-field="${name}" data-type="multi">
+      <label class="q">${label} <span class="req">*</span> <small style="color:var(--muted);font-weight:400">(يمكن اختيار أكثر من واحدة)</small></label>
+      <div class="choices stack">
+        ${opts.map((o,i)=>`<div class="choice">
+          <input type="checkbox" name="${name}" id="${name}_${i}" value="${o}">
+          <label for="${name}_${i}">${o}</label></div>`).join("")}
+      </div>
+      ${extra?`<input type="text" class="other-input" id="${name}_other" placeholder="أدوات أخرى (اكتبها إن وُجدت)…">`:""}
+    </div>`;
+
+  return `
+    <div class="step-head">
+      <span class="chip">المحور 1 من 6</span>
+      <h2>بيانات عامة وأنماط الاستخدام</h2>
+      <p>أسئلة سريعة عنك وعن طريقة استخدامك للأدوات.</p>
+    </div>
+    ${single("gender","الجنس",["ذكر","أنثى"],"grid2")}
+    ${single("track","نوع التخصص",["علمي (طب، هندسة، علوم، حاسوب…)","إنساني (آداب، تربية، قانون، إدارة…)"],"stack")}
+    ${single("level","المرحلة الدراسية",["الأولى","الثانية","الثالثة","الرابعة","دراسات عليا"])}
+    <div class="field">
+      <label class="q">الجامعة / الكلية <small style="color:var(--muted);font-weight:400">(اختياري)</small></label>
+      <input type="text" class="text-input" id="university" placeholder="مثال: اسم جامعتك — الكلية">
+    </div>
+    ${single("duration","منذ متى تستخدم هذه الأدوات؟",["لا أستخدمها","أقل من سنة","من 1 إلى سنتين","أكثر من سنتين"])}
+    <div id="noUseHint" class="hint" style="display:none; margin:-10px 0 18px; border-style:solid; border-color:var(--gold); background:#fff7e6; color:#8a6d1a">بما أنك لا تستخدم هذه الأدوات حالياً، أجب عن بقية الأسئلة بحسب رأيك أو تصوّرك العام عنها.</div>
+    ${single("frequency","معدّل استخدامك لها",["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"])}
+    ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Copilot","DeepSeek"],true)}
+    ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"])}
+  `;
+}
+
+/* ---- بناء خطوة محور ليكرت ---- */
+function axisHTML(ax){
+  let h = `<div class="step-head"><span class="chip">${ax.chip}</span><h2>${ax.title}</h2><p>${ax.desc}</p></div>
+    <div class="axis-legend"><span><b>5</b> موافق بشدة</span><span><b>3</b> محايد</span><span><b>1</b> غير موافق بشدة</span></div>`;
+  ax.items.forEach((txt,i)=>{
+    const n = ax.start + i;
+    h += `<div class="qcard" data-q="q${n}">
+      <div class="qt"><span class="n">${n}</span><span>${txt}</span></div>
+      <div class="likert">
+        ${[5,4,3,2,1].map(v=>`<button type="button" class="lk" data-v="${v}">${v}</button>`).join("")}
+      </div>
+      <div class="lk-ends"><span>موافق بشدة</span><span>غير موافق بشدة</span></div>
+    </div>`;
+  });
+  return h;
+}
+
+/* ---- المنطق ---- */
+const STEPS = [demographicsHTML(), ...AXES.map(axisHTML)];
+let cur = 0;
+const answers = {};
+
+const $ = s => document.querySelector(s);
+const stepContainer = $("#stepContainer");
+const topbar = $("#topbar"), nav = $("#nav");
+
+$("#consent").addEventListener("change", e => $("#startBtn").disabled = !e.target.checked);
+$("#startBtn").addEventListener("click", ()=>{
+  $("#screen-welcome").classList.remove("active");
+  $("#screen-steps").classList.add("active");
+  topbar.style.display = "block"; nav.style.display = "flex";
+  renderStep(0);
+});
+
+function renderStep(i){
+  cur = i;
+  stepContainer.innerHTML = STEPS[i];
+  window.scrollTo(0,0);
+  $("#pfill").style.width = ((i+1)/STEPS.length*100) + "%";
+  $("#plabel").textContent = `الخطوة ${i+1} من ${STEPS.length}`;
+  $("#prevBtn").style.visibility = i===0 ? "hidden" : "visible";
+  $("#nextBtn").textContent = i===STEPS.length-1 ? "إرسال ✓" : "التالي ←";
+  $("#errMsg").classList.remove("show");
+  bindStep();
+}
+
+function bindStep(){
+  // ملاحظة «لا أستخدمها» في خطوة البيانات العامة
+  const hint = document.getElementById("noUseHint");
+  if(hint){
+    stepContainer.querySelectorAll('input[name="duration"]').forEach(r=>
+      r.addEventListener("change", ()=>{
+        const sel = stepContainer.querySelector('input[name="duration"]:checked');
+        hint.style.display = (sel && sel.value==="لا أستخدمها") ? "block" : "none";
+      })
+    );
+  }
+  // ليكرت
+  stepContainer.querySelectorAll(".qcard").forEach(card=>{
+    const q = card.dataset.q;
+    card.querySelectorAll(".lk").forEach(btn=>{
+      if(answers[q]==btn.dataset.v) btn.classList.add("sel");
+      btn.addEventListener("click", ()=>{
+        card.querySelectorAll(".lk").forEach(b=>b.classList.remove("sel"));
+        btn.classList.add("sel");
+        answers[q] = btn.dataset.v;
+        card.classList.add("answered"); card.classList.remove("invalid");
+      });
+    });
+  });
+}
+
+$("#prevBtn").addEventListener("click", ()=>{ if(cur>0) renderStep(cur-1); });
+$("#nextBtn").addEventListener("click", ()=>{
+  if(!validateStep()){ $("#errMsg").classList.add("show"); return; }
+  saveStep();
+  if(cur < STEPS.length-1) renderStep(cur+1);
+  else submitAll();
+});
+
+function validateStep(){
+  let ok = true, firstInvalid = null;
+  // الحقول التصنيفية
+  stepContainer.querySelectorAll(".field[data-type]").forEach(f=>{
+    let checked = f.querySelectorAll("input:checked").length;
+    // احتساب خانة «أدوات أخرى» في حقول الاختيار المتعدد
+    if(f.dataset.type==="multi"){ const other=f.querySelector(".other-input"); if(other && other.value.trim()) checked++; }
+    if(checked===0){ ok=false; f.querySelector(".q").style.color="var(--red)"; if(!firstInvalid) firstInvalid=f; }
+    else f.querySelector(".q").style.color="";
+  });
+  // بطاقات ليكرت
+  stepContainer.querySelectorAll(".qcard").forEach(card=>{
+    if(!answers[card.dataset.q]){ ok=false; card.classList.add("invalid"); if(!firstInvalid) firstInvalid=card; }
+  });
+  if(!ok && firstInvalid){ firstInvalid.scrollIntoView({behavior:"smooth", block:"center"}); }
+  return ok;
+}
+
+function saveStep(){
+  stepContainer.querySelectorAll(".field[data-type='single'] input:checked").forEach(i=> answers[i.name]=i.value);
+  stepContainer.querySelectorAll(".field[data-type='multi']").forEach(f=>{
+    const vals = [...f.querySelectorAll("input:checked")].map(i=>i.value);
+    const other = f.querySelector(".other-input");
+    if(other && other.value.trim()) vals.push(other.value.trim());
+    answers[f.dataset.field] = vals.join(" ؛ ");
+  });
+  const uni = $("#university"); if(uni) answers["university"] = uni.value.trim();
+}
+
+function submitAll(){
+  $("#sending").classList.add("show");
+  const payload = { ...answers };
+  // إرسال إلى Google Apps Script
+  fetch(SCRIPT_URL, {
+    method:"POST",
+    mode:"no-cors",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }).then(()=> finishOk())
+    .catch(()=> finishOk()); // no-cors يُرجع استجابة مبهمة؛ نعدّ الوصول نجاحاً
+}
+
+function finishOk(){
+  $("#sending").classList.remove("show");
+  $("#screen-steps").classList.remove("active");
+  topbar.style.display="none"; nav.style.display="none";
+  $("#screen-done").classList.add("active");
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
