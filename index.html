@@ -73,10 +73,19 @@
   .choices{display:flex; flex-wrap:wrap; gap:8px;}
   .choice{position:relative; flex:1 1 auto;}
   .choice input{position:absolute; opacity:0; pointer-events:none;}
-  .choice label{display:block; text-align:center; padding:11px 14px; border:1.6px solid var(--line); border-radius:12px; font-size:14px; background:#fff; cursor:pointer; transition:.15s; white-space:nowrap;}
+  .choice label{display:flex; align-items:center; justify-content:center; gap:9px; text-align:center; padding:12px 14px; border:1.6px solid var(--line); border-radius:12px; font-size:14.5px; font-weight:600; background:#fff; cursor:pointer; transition:.15s;}
+  /* مؤشّر الاختيار: دائرة للأحادي، مربّع للمتعدّد */
+  .choice label::before{content:""; width:19px; height:19px; border:2px solid #c2d2ca; background:#fff; flex:none; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:13px; line-height:1; transition:.15s;}
+  .choice input[type="radio"] + label::before{border-radius:50%;}
+  .choice input[type="checkbox"] + label::before{border-radius:6px;}
   .choice input:checked + label{background:var(--green); border-color:var(--green); color:#fff; font-weight:700; box-shadow:0 4px 12px rgba(11,110,79,.25);}
+  .choice input[type="radio"]:checked + label::before{border-color:#fff; background:radial-gradient(circle, var(--green) 0 40%, #fff 44% 100%);}
+  .choice input[type="checkbox"]:checked + label::before{content:"✓"; border-color:#fff; background:#fff; color:var(--green);}
+  .choice input:focus-visible + label{outline:2px solid var(--green-l); outline-offset:2px;}
   .choices.stack .choice{flex:1 1 100%;}
   .choices.grid2 .choice{flex:1 1 calc(50% - 8px);}
+  /* ملاحظة الضغط على الخيارات */
+  .tap-hint{display:flex; align-items:center; gap:7px; font-size:12.5px; color:var(--green-d); background:var(--soft); border:1px dashed var(--line); border-radius:10px; padding:8px 12px; margin-bottom:16px;}
   .other-input{margin-top:8px; width:100%; padding:10px 12px; border:1.4px solid var(--line); border-radius:10px; font-family:inherit; font-size:14px;}
   .text-input{width:100%; padding:12px 14px; border:1.5px solid var(--line); border-radius:12px; font-family:inherit; font-size:14.5px;}
   .text-input:focus, .other-input:focus{outline:none; border-color:var(--green);}
@@ -87,7 +96,7 @@
   .qcard{border:1.5px solid var(--line); border-radius:14px; padding:14px 15px 12px; margin-bottom:12px; transition:.2s; background:#fff;}
   .qcard.answered{border-color:#bfe0d0; background:#fbfefc;}
   .qcard.invalid{border-color:var(--red); background:#fff6f5;}
-  .qcard .qt{font-size:14.5px; font-weight:500; margin-bottom:11px; display:flex; gap:8px;}
+  .qcard .qt{font-size:14.5px; font-weight:600; margin-bottom:11px; display:flex; gap:8px;}
   .qcard .qt .n{background:var(--green-d); color:#fff; min-width:23px; height:23px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex:none;}
   .qcard .rev{font-size:10px; color:var(--gold); border:1px solid var(--gold); border-radius:6px; padding:0 5px; align-self:center;}
   .likert{display:flex; gap:6px;}
@@ -274,6 +283,7 @@ function demographicsHTML(){
       <h2>بيانات عامة وأنماط الاستخدام</h2>
       <p>أسئلة سريعة عنك وعن طريقة استخدامك للأدوات.</p>
     </div>
+    <div class="tap-hint">👆 اضغط على الخيار المناسب لاختياره — يتلوّن بالأخضر عند الاختيار.</div>
     ${single("gender","الجنس",["ذكر","أنثى"],"grid2")}
     ${single("track","نوع التخصص",["علمي (طب، هندسة، علوم، حاسوب…)","إنساني (آداب، تربية، قانون، إدارة…)"],"stack")}
     ${single("level","المرحلة الدراسية",["الأولى","الثانية","الثالثة","الرابعة","دراسات عليا"])}
@@ -294,6 +304,7 @@ function demographicsHTML(){
 /* ---- بناء خطوة محور ليكرت ---- */
 function axisHTML(ax){
   let h = `<div class="step-head"><span class="chip">${ax.chip}</span><h2>${ax.title}</h2><p>${ax.desc}</p></div>
+    <div class="tap-hint">👆 اضغط على الرقم الذي يعبّر عن رأيك في كل عبارة (5 = موافق بشدة … 1 = غير موافق بشدة).</div>
     <div class="axis-legend"><span><b>5</b> موافق بشدة</span><span><b>3</b> محايد</span><span><b>1</b> غير موافق بشدة</span></div>`;
   ax.items.forEach((txt,i)=>{
     const n = ax.start + i;
