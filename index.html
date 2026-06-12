@@ -282,10 +282,12 @@ function demographicsHTML(){
       <input type="text" class="text-input" id="university" placeholder="مثال: اسم جامعتك — الكلية">
     </div>
     ${single("duration","منذ متى تستخدم هذه الأدوات؟",["لا أستخدمها","أقل من سنة","من 1 إلى سنتين","أكثر من سنتين"])}
-    <div id="noUseHint" class="hint" style="display:none; margin:-10px 0 18px; border-style:solid; border-color:var(--gold); background:#fff7e6; color:#8a6d1a">بما أنك لا تستخدم هذه الأدوات حالياً، أجب عن بقية الأسئلة بحسب رأيك أو تصوّرك العام عنها.</div>
-    ${single("frequency","معدّل استخدامك لها",["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"])}
-    ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Copilot","DeepSeek"],true)}
-    ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"])}
+    <div id="noUseHint" class="hint" style="display:none; margin:-10px 0 18px; border-style:solid; border-color:var(--gold); background:#fff7e6; color:#8a6d1a">بما أنك لا تستخدم هذه الأدوات، تكفي إجابتك عن البيانات أعلاه — وستنتقل مباشرة إلى نهاية الاستبانة عند الضغط على «إنهاء وإرسال». شكراً لمشاركتك.</div>
+    <div id="usageFields">
+      ${single("frequency","معدّل استخدامك لها",["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"])}
+      ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Copilot","DeepSeek"],true)}
+      ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"])}
+    </div>
   `;
 }
 
@@ -336,15 +338,35 @@ function renderStep(i){
 }
 
 function bindStep(){
-  // ملاحظة «لا أستخدمها» في خطوة البيانات العامة
-  const hint = document.getElementById("noUseHint");
-  if(hint){
-    stepContainer.querySelectorAll('input[name="duration"]').forEach(r=>
-      r.addEventListener("change", ()=>{
-        const sel = stepContainer.querySelector('input[name="duration"]:checked');
-        hint.style.display = (sel && sel.value==="لا أستخدمها") ? "block" : "none";
-      })
-    );
+  // خطوة البيانات العامة: استعادة الاختيارات + منطق «لا أستخدمها»
+  if(cur===0){
+    // استعادة اختيارات الطالب عند الرجوع لهذه الخطوة
+    Object.keys(answers).forEach(k=>{
+      stepContainer.querySelectorAll(`input[name="${k}"]`).forEach(inp=>{
+        if(inp.type==="radio" && inp.value===answers[k]) inp.checked=true;
+        if(inp.type==="checkbox" && answers[k] && answers[k].split(" ؛ ").includes(inp.value)) inp.checked=true;
+      });
+    });
+    const uni = document.getElementById("university"); if(uni && answers.university) uni.value=answers.university;
+
+    const hint  = document.getElementById("noUseHint");
+    const usage = document.getElementById("usageFields");
+    const syncDurationUI = ()=>{
+      const sel = stepContainer.querySelector('input[name="duration"]:checked');
+      const nonUser = !!(sel && sel.value==="لا أستخدمها");
+      if(hint)  hint.style.display  = nonUser ? "block" : "none";
+      if(usage){
+        usage.style.display = nonUser ? "none" : "block";
+        if(nonUser){ // مسح أي اختيار سابق لأسئلة الاستخدام
+          usage.querySelectorAll("input:checked").forEach(i=> i.checked=false);
+          usage.querySelectorAll(".other-input").forEach(o=> o.value="");
+          usage.querySelectorAll(".q").forEach(q=> q.style.color="");
+        }
+      }
+      $("#nextBtn").textContent = nonUser ? "إنهاء وإرسال ✓" : "التالي ←";
+    };
+    stepContainer.querySelectorAll('input[name="duration"]').forEach(r=> r.addEventListener("change", syncDurationUI));
+    syncDurationUI();
   }
   // ليكرت
   stepContainer.querySelectorAll(".qcard").forEach(card=>{
@@ -365,6 +387,11 @@ $("#prevBtn").addEventListener("click", ()=>{ if(cur>0) renderStep(cur-1); });
 $("#nextBtn").addEventListener("click", ()=>{
   if(!validateStep()){ $("#errMsg").classList.add("show"); return; }
   saveStep();
+  // فرز: غير المستخدم يُرسَل مباشرة بعد البيانات العامة (دون فقرات المقياس)
+  if(cur===0 && answers.duration==="لا أستخدمها"){
+    delete answers.frequency; delete answers.tools; delete answers.purposes; // تنظيف أي قيم استخدام عالقة
+    submitAll(); return;
+  }
   if(cur < STEPS.length-1) renderStep(cur+1);
   else submitAll();
 });
@@ -373,6 +400,7 @@ function validateStep(){
   let ok = true, firstInvalid = null;
   // الحقول التصنيفية
   stepContainer.querySelectorAll(".field[data-type]").forEach(f=>{
+    if(f.offsetParent === null) return; // تخطّي الحقول المخفيّة (أسئلة الاستخدام لغير المستخدم)
     let checked = f.querySelectorAll("input:checked").length;
     // احتساب خانة «أدوات أخرى» في حقول الاختيار المتعدد
     if(f.dataset.type==="multi"){ const other=f.querySelector(".other-input"); if(other && other.value.trim()) checked++; }
