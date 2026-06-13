@@ -124,6 +124,8 @@
   .btn-primary{background:var(--green); color:#fff; box-shadow:0 5px 16px rgba(11,110,79,.28);}
   .btn-primary:active{transform:translateY(1px);}
   .btn-primary:disabled{background:#a9c4b9; opacity:.5; box-shadow:none;}
+  @keyframes pulseBtn{0%,100%{transform:none;}50%{transform:scale(1.035);}}
+  .btn-primary.ready{animation:pulseBtn .55s ease 2; box-shadow:0 0 0 3px rgba(201,150,31,.45), 0 5px 16px rgba(11,110,79,.3);}
   .btn-ghost{flex:0 0 auto; background:var(--soft); color:var(--green-d); padding:14px 20px;}
   .err-msg{color:var(--red); font-size:13px; text-align:center; padding:0 18px 8px; display:none;}
   .err-msg.show{display:block;}
@@ -415,6 +417,17 @@ function bindStep(){
     };
     stepContainer.querySelectorAll('input[name="duration"]').forEach(r=> r.addEventListener("change", syncDurationUI));
     syncDurationUI();
+    // تمرير تلقائي للحقل التالي عند اختيار إجابة أحادية
+    stepContainer.querySelectorAll('.field[data-type="single"] input[type="radio"]').forEach(radio=>{
+      radio.addEventListener("change", (e)=>{
+        const f=e.target.closest(".field");
+        if(f && f.dataset.field==="duration"){ // لا تمرير لغير المستخدم (تنتهي الاستبانة)
+          const sel=stepContainer.querySelector('input[name="duration"]:checked');
+          if(sel && sel.value==="لا أستخدمها") return;
+        }
+        scrollToNextField(f);
+      });
+    });
   }
   // ليكرت
   stepContainer.querySelectorAll(".qcard").forEach(card=>{
@@ -426,9 +439,28 @@ function bindStep(){
         btn.classList.add("sel");
         answers[q] = btn.dataset.v;
         card.classList.add("answered"); card.classList.remove("invalid");
+        setTimeout(()=>autoAdvanceLikert(card), 160);
       });
     });
   });
+}
+
+/* تمرير تلقائي: ليكرت ← السؤال التالي غير المُجاب، أو تنبيه زر «التالي» عند الاكتمال */
+function autoAdvanceLikert(card){
+  const cards=[...stepContainer.querySelectorAll(".qcard")];
+  const idx=cards.indexOf(card);
+  let target=null;
+  for(let i=idx+1;i<cards.length;i++){ if(!answers[cards[i].dataset.q]){ target=cards[i]; break; } }
+  if(target){ target.scrollIntoView({behavior:"smooth", block:"center"}); }
+  else if(cards.every(c=>answers[c.dataset.q])){
+    const btn=$("#nextBtn"); btn.classList.add("ready"); setTimeout(()=>btn.classList.remove("ready"),1500);
+  }
+}
+/* تمرير تلقائي للحقل المرئي التالي في البيانات العامة */
+function scrollToNextField(currentField){
+  const all=[...stepContainer.querySelectorAll(".field")].filter(f=> f.offsetParent!==null);
+  const idx=all.indexOf(currentField);
+  if(idx>=0 && idx+1<all.length){ all[idx+1].scrollIntoView({behavior:"smooth", block:"center"}); }
 }
 
 $("#prevBtn").addEventListener("click", ()=>{ if(cur>0) renderStep(cur-1); });
