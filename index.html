@@ -480,12 +480,29 @@ function finishOk(){
   window.scrollTo(0,0);
 }
 
-/* مشاركة الرابط */
+/* مشاركة الرابط — يُشارك دائماً الرابط العام المنشور */
+const SHARE_URL = "https://jasim-mechatronics.github.io/ai-identity-survey/";
+function shareFeedback(msg){ const b=$("#shareBtn"); b.textContent=msg; setTimeout(()=>{ b.textContent="📤 مشاركة الاستبانة"; }, 2200); }
+async function copyShareLink(){
+  // 1) واجهة الحافظة الحديثة (في السياق الآمن https)
+  try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(SHARE_URL); shareFeedback("✓ نُسخ الرابط"); return; } }catch(e){}
+  // 2) احتياطي قديم يعمل محلياً
+  try{
+    const ta=document.createElement("textarea"); ta.value=SHARE_URL;
+    ta.style.position="fixed"; ta.style.top="-9999px"; document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    const ok=document.execCommand("copy"); document.body.removeChild(ta);
+    if(ok){ shareFeedback("✓ نُسخ الرابط"); return; }
+  }catch(e){}
+  // 3) ملاذ أخير: إظهار الرابط لنسخه يدوياً
+  window.prompt("انسخ رابط الاستبانة وشاركه:", SHARE_URL);
+}
 $("#shareBtn").addEventListener("click", async ()=>{
-  const url = location.href.split("?")[0].split("#")[0];
-  const data = { title:"استبانة علمية", text:"شارك في استبانة علمية قصيرة لطلبة الجامعات العراقية:", url };
-  if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
-  else { try{ await navigator.clipboard.writeText(url); const b=$("#shareBtn"); b.textContent="✓ نُسخ الرابط"; setTimeout(()=>b.textContent="📤 مشاركة الاستبانة",2000); }catch(e){} }
+  if(navigator.share){
+    try{ await navigator.share({ title:"استبانة علمية", text:"شارك في استبانة علمية قصيرة لطلبة الجامعات العراقية:", url:SHARE_URL }); return; }
+    catch(e){ if(e && e.name==="AbortError") return; /* المستخدم ألغى المشاركة */ }
+  }
+  copyShareLink();
 });
 
 /* منع الإرسال المكرر من نفس الجهاز */
