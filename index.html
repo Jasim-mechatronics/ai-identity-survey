@@ -191,7 +191,17 @@
     <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
     <h2>شكراً لمشاركتك! 🌟</h2>
     <p>تم تسجيل إجاباتك بنجاح. مساهمتك تدعم بحثاً علمياً عن الهوية المعرفية للطالب الجامعي.</p>
-    <p style="margin-top:14px; font-size:13px;">يمكنك إغلاق الصفحة الآن.</p>
+    <p style="margin-top:14px">هل تعرف زملاء قد تهمّهم المشاركة؟ شارك الاستبانة معهم لإثراء البحث 🌟</p>
+    <button class="btn btn-primary" id="shareBtn" style="max-width:320px; margin:14px auto 0;">📤 مشاركة الاستبانة</button>
+    <p style="margin-top:16px; font-size:13px;">يمكنك إغلاق الصفحة الآن.</p>
+  </section>
+
+  <!-- شاشة «سبق الإكمال» -->
+  <section class="screen done" id="screen-already">
+    <div class="check" style="background:linear-gradient(135deg,var(--gold),#e0b85a)"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <h2>سبق أن أكملت الاستبانة</h2>
+    <p>شكراً لك! سُجّلت إجابتك من هذا الجهاز مسبقاً، ولا حاجة لإعادتها.</p>
+    <button class="btn btn-ghost" id="againBtn" style="max-width:320px; margin:16px auto 0; flex:none;">ملء الاستبانة لشخص آخر على نفس الجهاز</button>
   </section>
 
   <!-- أزرار التنقّل -->
@@ -283,7 +293,7 @@ function demographicsHTML(){
           <input type="checkbox" name="${name}" id="${name}_${i}" value="${o}">
           <label for="${name}_${i}">${o}</label></div>`).join("")}
       </div>
-      ${extra?`<input type="text" class="other-input" id="${name}_other" placeholder="أدوات أخرى (اكتبها إن وُجدت)…">`:""}
+      ${extra?`<input type="text" class="other-input" id="${name}_other" placeholder="أخرى (اكتبها إن وُجدت)…">`:""}
     </div>`;
 
   return `
@@ -305,7 +315,7 @@ function demographicsHTML(){
     <div id="usageFields">
       ${single("frequency","معدّل استخدامك لها",["يومياً","عدة مرات أسبوعياً","أحياناً","نادراً"])}
       ${multi("tools","أكثر الأدوات استخداماً",["ChatGPT","Gemini","Claude","Copilot","DeepSeek"],true)}
-      ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"])}
+      ${multi("purposes","أكثر الأغراض التي تستخدمها لأجلها",["الفهم والشرح","التلخيص","الكتابة والصياغة","الترجمة","حل الواجبات والاختبارات","البحث عن مصادر"],true)}
     </div>
   `;
 }
@@ -462,12 +472,35 @@ function submitAll(){
 }
 
 function finishOk(){
+  try{ localStorage.setItem("ai_survey_done","1"); }catch(e){}
   $("#sending").classList.remove("show");
   $("#screen-steps").classList.remove("active");
   topbar.style.display="none"; nav.style.display="none";
   $("#screen-done").classList.add("active");
   window.scrollTo(0,0);
 }
+
+/* مشاركة الرابط */
+$("#shareBtn").addEventListener("click", async ()=>{
+  const url = location.href.split("?")[0].split("#")[0];
+  const data = { title:"استبانة علمية", text:"شارك في استبانة علمية قصيرة لطلبة الجامعات العراقية:", url };
+  if(navigator.share){ try{ await navigator.share(data); }catch(e){} }
+  else { try{ await navigator.clipboard.writeText(url); const b=$("#shareBtn"); b.textContent="✓ نُسخ الرابط"; setTimeout(()=>b.textContent="📤 مشاركة الاستبانة",2000); }catch(e){} }
+});
+
+/* منع الإرسال المكرر من نفس الجهاز */
+$("#againBtn").addEventListener("click", ()=>{
+  try{ localStorage.removeItem("ai_survey_done"); }catch(e){}
+  $("#screen-already").classList.remove("active");
+  $("#screen-welcome").classList.add("active");
+  window.scrollTo(0,0);
+});
+try{
+  if(localStorage.getItem("ai_survey_done")==="1"){
+    $("#screen-welcome").classList.remove("active");
+    $("#screen-already").classList.add("active");
+  }
+}catch(e){}
 </script>
 </body>
 </html>
