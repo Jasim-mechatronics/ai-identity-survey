@@ -49,7 +49,8 @@
 
   /* Welcome */
   .welcome{text-align:center; padding-top:18px;}
-  .welcome .hero{width:74px; height:74px; margin:0 auto 16px; border-radius:20px; background:linear-gradient(135deg,var(--green-d),var(--green-l)); display:flex; align-items:center; justify-content:center; font-size:38px; box-shadow:0 8px 22px rgba(11,110,79,.3);}
+  .welcome .hero{width:96px; height:96px; margin:0 auto 16px; border-radius:24px; background:linear-gradient(135deg,var(--green-d),var(--green-l)); display:flex; align-items:center; justify-content:center; box-shadow:0 10px 26px rgba(11,110,79,.32); padding:15px;}
+  .welcome .hero svg{width:100%; height:100%; display:block;}
   .welcome h1{font-size:21px; margin:0 0 6px; color:var(--green-d); line-height:1.5;}
   .welcome .conf{font-size:13px; color:var(--muted); margin-bottom:20px;}
   .intro-card{background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:18px; text-align:right; font-size:14.5px; margin-bottom:14px;}
@@ -161,13 +162,28 @@
 
   <!-- شاشة الترحيب -->
   <section class="screen active welcome" id="screen-welcome">
-    <div class="hero">🎓</div>
+    <div class="hero" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="60" cy="60" r="52" fill="rgba(255,255,255,.07)"/>
+        <!-- النصف الأيسر: الدماغ (الهوية المعرفية) -->
+        <path d="M60 26 C49 17, 32 20, 30 33 C19 34, 17 49, 27 54 C21 63, 27 77, 39 75 C43 85, 60 85, 60 75 Z" fill="rgba(255,255,255,.16)" stroke="#fff" stroke-width="3.2" stroke-linejoin="round"/>
+        <path d="M45 35 C41 41, 47 45, 43 51 C39 57, 45 61, 43 67" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- النصف الأيمن: دارة (الذكاء الاصطناعي) -->
+        <path d="M60 26 C71 17, 88 20, 90 33 C101 34, 103 49, 93 54 C99 63, 93 77, 81 75 C77 85, 60 85, 60 75 Z" fill="rgba(201,150,31,.20)" stroke="#fff" stroke-width="3.2" stroke-linejoin="round"/>
+        <g stroke="#fff" stroke-width="2.4" stroke-linecap="round">
+          <path d="M67 38 H82"/><path d="M67 52 H88"/><path d="M67 66 H82"/><path d="M82 38 V66"/>
+        </g>
+        <g fill="#ffd86b"><circle cx="82" cy="38" r="3.6"/><circle cx="88" cy="52" r="3.6"/><circle cx="82" cy="66" r="3.6"/></g>
+        <!-- شرارة توليدية -->
+        <path d="M57 96 l5 -10 -8 0 5 -10" stroke="#ffd86b" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
     <h1>الذكاء الاصطناعي التوليدي<br>والهوية المعرفية الجامعية</h1>
     <div class="conf">استبانة علمية موجّهة لطلبة الجامعات العراقية · 2026</div>
 
     <div class="intro-card">
       <div class="row"><span class="ic">🎓</span><div>موجّهة لطلبة <b>الجامعات العراقية</b> — الدراسات الأولية والعليا.</div></div>
-      <div class="row"><span class="ic">⏱️</span><div>تستغرق <b>5–7 دقائق</b> فقط، وتُجاب من الهاتف بسهولة.</div></div>
+      <div class="row"><span class="ic">⏱️</span><div>تستغرق <b>أقل من ٥ دقائق</b>، وتُجاب من الهاتف بسهولة.</div></div>
       <div class="row"><span class="ic">🔒</span><div>إجابتك <b>سرية تماماً</b> وبلا اسم، وتُستعمل لأغراض البحث العلمي فقط.</div></div>
       <div class="row"><span class="ic">✅</span><div>لا توجد إجابة صحيحة وأخرى خاطئة — المطلوب رأيك الصريح.</div></div>
       <div class="hint">المقصود بالذكاء الاصطناعي التوليدي: الأدوات التي تُنتج نصوصاً أو إجابات بناءً على طلبك، مثل ChatGPT وGemini وCopilot وDeepSeek وغيرها.</div>
