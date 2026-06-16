@@ -264,11 +264,14 @@ function render(payload){
   const track  = countBy("track");
   const male = (gender.labels.indexOf("ذكر")>=0)? gender.data[gender.labels.indexOf("ذكر")] : 0;
   const female = (gender.labels.indexOf("أنثى")>=0)? gender.data[gender.labels.indexOf("أنثى")] : 0;
+  const nonUsers = rows.filter(r=> (r.duration||"").toString().trim()==="لا أستخدمها").length;
+  const nonPct = rows.length? Math.round(nonUsers/rows.length*100) : 0;
   document.getElementById("kpis").innerHTML = `
     <div class="kpi"><div class="v">${rows.length}</div><div class="l">إجمالي الردود</div></div>
+    <div class="kpi"><div class="v">${rows.length - nonUsers}</div><div class="l">مستخدمون للأداة</div></div>
+    <div class="kpi gold"><div class="v">${nonUsers}</div><div class="l">لا يستخدمون الأداة (${nonPct}%)</div></div>
     <div class="kpi"><div class="v">${male}</div><div class="l">ذكور</div></div>
     <div class="kpi"><div class="v">${female}</div><div class="l">إناث</div></div>
-    <div class="kpi gold"><div class="v">${track.labels.length? Math.round((track.data[0]/rows.length)*100):0}%</div><div class="l">${track.labels[0]||"—"}</div></div>
   `;
 
   /* الرسومات */
@@ -288,7 +291,7 @@ function render(payload){
   const axes = { labels: AXES_DEF.map(d=>d.name), data: aStats.map(s=>s.mean) };
   drawRadar("cAxes", axes);
 
-  buildInterpretation({ n:rows.length, gender, track, level, freq, tools, purp, axes, aStats });
+  buildInterpretation({ n:rows.length, gender, track, level, freq, tools, purp, axes, aStats, nonUsers });
   buildWarnings(rows);
   buildItems(rows);
   buildCompare(rows);
@@ -343,6 +346,10 @@ function buildInterpretation(d){
   if(d.n < 30) sample = `عدد الردود الحالي <b>${d.n}</b>، وهو حجم تجريبي صغير؛ القراءة أدناه توضيحية فقط، وتصبح ذات دلالة مع اقتراب العينة من المستهدف (300–400، وبحد أدنى 200–250).`;
   else if(d.n < 200) sample = `بلغ عدد الردود <b>${d.n}</b>، وهو دون الحدّ الأدنى المستهدف (200–250)؛ النتائج أولية وقابلة للتغيّر مع زيادة العينة.`;
   else sample = `بلغ عدد الردود <b>${d.n}</b>، وهو ضمن النطاق المستهدف، ما يمنح القراءة ثباتاً نسبياً.`;
+  if(d.nonUsers!==undefined && d.n>0){
+    const np=Math.round(d.nonUsers/d.n*100);
+    sample += ` ومن بين هؤلاء <b>${d.nonUsers}</b> (${np}%) <b>لا يستخدمون الأداة</b> — وهم مؤشّر على مدى انتشارها، ومستبعَدون من تحليل المقاييس (عينة المقياس: <b>${d.n - d.nonUsers}</b> مستخدماً).`;
+  }
   items.push(["🧮 حجم العينة", sample]);
 
   // التركيبة
@@ -518,7 +525,7 @@ function drawRadar(id, d){
   });
 }
 
-/* بوابة الدخول: لا تُحمَّل البيانات إلا بعد التحقق من الرمز */
+/* بوابة الدخول */
 window.__startDashboard = function(){ loadData(); setInterval(loadData, 60000); };
 </script>
 
